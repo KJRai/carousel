@@ -37,12 +37,11 @@
 }
 
 .embla {
-  overflow: hidden;
+  
 }
 
 .viewport {
-  overflow: hidden;
-  width: 100%;
+  width: 80%;
 }
 
 .embla__container {
@@ -51,12 +50,12 @@
 
 .embla__slide {
   position: relative;
-  min-width: 100%;
+  min-width: 80%;
   box-sizing: border-box;
 }
 
 .cat {
-  width: 100%;
+  width:80%;
   border-radius: 8px;
   display: block;
 }

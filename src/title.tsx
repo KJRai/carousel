@@ -18,7 +18,7 @@ const theme = createTheme({
   components: {
     Container: Container.extend({
       classNames: (_, { size }) => ({
-        root: cx({ [classes.responsiveContainer]: size === 'xl' }),
+        root: cx({ [classes.responsiveContainer]: size === 'responsive' }),
       }),
     }),
   },
@@ -36,7 +36,7 @@ export function Slides({ catimage }: SlidesProps) {
 
   return (
     <MantineProvider theme={theme}>
-      <Container size="responsive">
+      <Container size="responsive" ml="30">
         <h1>Cat Slides</h1>
         <div className={classes.embla}>
           <div className={classes.viewport} ref={emblaRef}>
