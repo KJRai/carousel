@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { Container, createTheme, MantineProvider, rem, resolveClassNames } from '@mantine/core';
+import { Container, createTheme, MantineProvider, rem } from '@mantine/core';
 import classes from './slide.module.css';
 import '@mantine/core/styles.css';
+import Autoplay from 'embla-carousel-autoplay';
 
 type CatImage = {
   id: string;
@@ -43,12 +44,12 @@ const theme = createTheme({
 
 export function Slides({ catimage }: SlidesProps) {
 
-  const [emblaRef] = useEmblaCarousel(
+  const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: false,
       align: 'center',
     }
-    // , [Autoplay({ stopOnInteraction: true })]
+    , [Autoplay({ stopOnInteraction: true })]
   );
  
     const containerRef = useRef<HTMLDivElement>(null);
@@ -58,16 +59,30 @@ export function Slides({ catimage }: SlidesProps) {
       if (containerRef.current) {
         const sizeKey = containerRef.current.dataset.size;
         if (sizeKey && sizeKey in CONTAINER_SIZES) {
-          setContainerWidth(CONTAINER_SIZES[sizeKey]);
+          const newWidth = CONTAINER_SIZES[sizeKey];
+          setContainerWidth(newWidth);
         }
       }
     };
   
     useEffect(() => {
       measureContainer();
-      window.addEventListener('resize', measureContainer);
-      return () => window.removeEventListener('resize', measureContainer);
-    }, []);
+    })
+
+      useEffect(()=>{
+      const handleResize = () => {
+        measureContainer();
+      };
+      
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+      }, []);
+
+    useEffect(() => {
+      if (emblaApi && containerWidth > 0) {
+        emblaApi.reInit();  
+      }
+    }, [containerWidth, emblaApi]);
   
     return (
       <MantineProvider theme={theme}>
